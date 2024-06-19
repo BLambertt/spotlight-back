@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import API_URL from '../config';
 
 const UserAccommodations = () => {
@@ -26,7 +26,12 @@ const UserAccommodations = () => {
             },
             body: JSON.stringify(accommodation),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then((data) => {
                 setAccommodations([...accommodations, data]);
                 setName('');
@@ -40,7 +45,9 @@ const UserAccommodations = () => {
             <h1>Accommodations for User {id}</h1>
             <ul>
                 {accommodations.map((accommodation) => (
-                    <li key={accommodation.id}>{accommodation.name}</li>
+                    <li key={accommodation.id}>
+                        <Link to={`/accommodations/${accommodation.id}`}>{accommodation.name}</Link>
+                    </li>
                 ))}
             </ul>
 
@@ -70,4 +77,4 @@ const UserAccommodations = () => {
     );
 };
 
-export default UserAccommodations;
+export default

@@ -11,7 +11,7 @@ import AddAccommodation from "./components/AddAccomodation";
 import AccommodationDetail from "./components/AccomodationDetail";
 import EditAccommodation from "./components/EditAccomodation";
 import DeleteAccommodation from "./components/DeleteAccomodation";
-import UserAccommodations from "./components/UserAccomdation";
+import UserAccommodations from "./components/UserAccommodations";
 
 function App() {
   return (
