@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import API_URL from '../config';
-import {Link} from "react-router-dom";
 
 const UsersList = () => {
     const [users, setUsers] = useState([]);
@@ -15,6 +15,9 @@ const UsersList = () => {
     return (
         <div>
             <h1>Users</h1>
+            <Link to="/users/add">
+                <button>Add User</button>
+            </Link>
             <ul>
                 {users.map(user => (
                     <li key={user.id}>

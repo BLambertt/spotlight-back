@@ -11,6 +11,7 @@ import AddAccommodation from "./components/AddAccomodation";
 import AccommodationDetail from "./components/AccomodationDetail";
 import EditAccommodation from "./components/EditAccomodation";
 import DeleteAccommodation from "./components/DeleteAccomodation";
+import UserAccommodations from "./components/UserAccomdation";
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
             <Route path="/accommodations/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/:id/edit" element={<EditAccommodation />} />
             <Route path="/accommodations/:id/delete" element={<DeleteAccommodation />} />
+            <Route path="/users/:id/accommodations" element={<UserAccommodations />} />
+
         </Routes>
       </Router>
   );
