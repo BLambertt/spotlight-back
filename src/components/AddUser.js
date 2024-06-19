@@ -10,7 +10,7 @@ const AddUser = () => {
         e.preventDefault();
         const user = { username, email, password };
 
-        fetch(`${API_URL}/users/add`, {
+        fetch(`${API_URL}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
