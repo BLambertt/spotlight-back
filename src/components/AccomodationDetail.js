@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useParams, useNavigate, Link} from 'react-router-dom';
 import API_URL from '../config';
 
 const AccommodationDetail = () => {
@@ -61,7 +61,7 @@ const AccommodationDetail = () => {
             <ul>
                 {accommodation.rooms.map((room) => (
                     <li key={room.id}>
-                        {room.name}
+                        <Link to={`/rooms/${room.id}`}>{room.name}</Link>
                         <button onClick={() => handleDeleteRoom(room.id)}>Delete</button>
                     </li>
                 ))}

@@ -12,6 +12,7 @@ import AccommodationDetail from "./components/AccomodationDetail";
 import EditAccommodation from "./components/EditAccomodation";
 import DeleteAccommodation from "./components/DeleteAccomodation";
 import UserAccommodations from "./components/UserAccommodations";
+import RoomDetail from "./components/RoomDetail";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route path="/accommodations/:id/edit" element={<EditAccommodation />} />
             <Route path="/accommodations/:id/delete" element={<DeleteAccommodation />} />
             <Route path="/users/:id/accommodations" element={<UserAccommodations />} />
+
+            <Route path="/rooms/:id" element={<RoomDetail />} />
 
         </Routes>
       </Router>
