@@ -77,4 +77,4 @@ const UserAccommodations = () => {
     );
 };
 
-export default
+export default UserAccommodations;
