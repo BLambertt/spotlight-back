@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API_URL from '../config';
+import {Link} from "react-router-dom";
 
 const UsersList = () => {
     const [users, setUsers] = useState([]);
@@ -16,7 +17,9 @@ const UsersList = () => {
             <h1>Users</h1>
             <ul>
                 {users.map(user => (
-                    <li key={user.id}>{user.username}</li>
+                    <li key={user.id}>
+                        <Link to={`/users/${user.id}`}>{user.username}</Link>
+                    </li>
                 ))}
             </ul>
         </div>

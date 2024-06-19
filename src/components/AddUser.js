@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API_URL from '../config';
 
 const AddUser = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,12 +19,18 @@ const AddUser = () => {
             },
             body: JSON.stringify(user)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('User added:', data);
                 setUsername('');
                 setEmail('');
                 setPassword('');
+                navigate('/users'); // Redirige vers la liste des utilisateurs après l'ajout
             })
             .catch(error => console.error('Error adding user:', error));
     };
