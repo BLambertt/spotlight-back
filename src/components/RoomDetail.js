@@ -6,17 +6,16 @@ const RoomDetail = () => {
     const { id } = useParams();
     const [room, setRoom] = useState(null);
     const [lights, setLights] = useState([]);
-    const [interrupters, setInterrupters] = useState([]);
     const [lightName, setLightName] = useState('');
     const [interrupterName, setInterrupterName] = useState('');
+    const [interrupters, setInterrupters] = useState({});
 
     useEffect(() => {
         fetch(`${API_URL}/rooms/${id}`)
             .then(response => response.json())
             .then(data => {
                 setRoom(data);
-                setLights(data.lights);
-                setInterrupters(data.interrupters);
+                setLights(data.lights || []);
             })
             .catch(error => console.error('Error fetching room:', error));
     }, [id]);
@@ -40,9 +39,9 @@ const RoomDetail = () => {
             .catch((error) => console.error('Error adding light:', error));
     };
 
-    const handleAddInterrupter = (e) => {
+    const handleAddInterrupter = (e, lightId) => {
         e.preventDefault();
-        const interrupter = { name: interrupterName, room: { id } };
+        const interrupter = { name: interrupterName, light: { id: lightId } };
 
         fetch(`${API_URL}/interrupters`, {
             method: 'POST',
@@ -53,7 +52,10 @@ const RoomDetail = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setInterrupters([...interrupters, data]);
+                setInterrupters((prev) => ({
+                    ...prev,
+                    [lightId]: [...(prev[lightId] || []), data],
+                }));
                 setInterrupterName('');
             })
             .catch((error) => console.error('Error adding interrupter:', error));
@@ -69,12 +71,15 @@ const RoomDetail = () => {
             .catch((error) => console.error('Error deleting light:', error));
     };
 
-    const handleDeleteInterrupter = (interrupterId) => {
+    const handleDeleteInterrupter = (interrupterId, lightId) => {
         fetch(`${API_URL}/interrupters/${interrupterId}`, {
             method: 'DELETE',
         })
             .then(() => {
-                setInterrupters(interrupters.filter(interrupter => interrupter.id !== interrupterId));
+                setInterrupters((prev) => ({
+                    ...prev,
+                    [lightId]: prev[lightId].filter(interrupter => interrupter.id !== interrupterId),
+                }));
             })
             .catch((error) => console.error('Error deleting interrupter:', error));
     };
@@ -91,6 +96,27 @@ const RoomDetail = () => {
                     <li key={light.id}>
                         {light.name}
                         <button onClick={() => handleDeleteLight(light.id)}>Delete</button>
+                        <h3>Interrupters</h3>
+                        <ul>
+                            {(interrupters[light.id] || []).map((interrupter) => (
+                                <li key={interrupter.id}>
+                                    {interrupter.name}
+                                    <button onClick={() => handleDeleteInterrupter(interrupter.id, light.id)}>Delete</button>
+                                </li>
+                            ))}
+                        </ul>
+                        <form onSubmit={(e) => handleAddInterrupter(e, light.id)}>
+                            <div>
+                                <label>Interrupter Name</label>
+                                <input
+                                    type="text"
+                                    value={interrupterName}
+                                    onChange={(e) => setInterrupterName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit">Add Interrupter</button>
+                        </form>
                     </li>
                 ))}
             </ul>
@@ -107,30 +133,6 @@ const RoomDetail = () => {
                     />
                 </div>
                 <button type="submit">Add Light</button>
-            </form>
-
-            <h2>Interrupters</h2>
-            <ul>
-                {interrupters.map((interrupter) => (
-                    <li key={interrupter.id}>
-                        {interrupter.name}
-                        <button onClick={() => handleDeleteInterrupter(interrupter.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-
-            <form onSubmit={handleAddInterrupter}>
-                <h3>Add Interrupter</h3>
-                <div>
-                    <label>Interrupter Name</label>
-                    <input
-                        type="text"
-                        value={interrupterName}
-                        onChange={(e) => setInterrupterName(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Add Interrupter</button>
             </form>
         </div>
     );
